@@ -84,7 +84,6 @@ public class TechnologyDeviceAPI implements ISerializer{
         }return "No Tablet";
     }
 
-
     //the following is isValidId can be updated
     //to suit your code
      public boolean isValidId(String id) {
