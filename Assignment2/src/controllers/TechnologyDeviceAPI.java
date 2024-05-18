@@ -13,7 +13,7 @@ import java.util.*;
 
 
 //TODO - ensure that this class implements iSerializer
-public class TechnologyDeviceAPI {
+public class TechnologyDeviceAPI implements ISerializer{
     //TODO - create 2 fields
 
     //TODO - create constructor
@@ -57,6 +57,16 @@ public class TechnologyDeviceAPI {
     // TODO Persistence methods
 
 
+    @Override
+    public void save() throws Exception {
 
+    }
 
+    @Override
+    public void load() throws Exception {
+
+    }
+    public String fileName(){
+
+    }
 }
