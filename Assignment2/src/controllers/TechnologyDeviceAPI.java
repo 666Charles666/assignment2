@@ -29,15 +29,15 @@ public class TechnologyDeviceAPI implements ISerializer{
 
 
     //TODO - CRUD Methods
-     public boolean addTechnologyDevice(Technology technology){
-         for (Technology existingTech : technologyList) {
-             if (existingTech.getId().equals(technology.getId())) {
-                 return false;
-             }
-         }
-         technologyList.add(technology);
-         return true;
-     }
+    public boolean addTechnologyDevice(Technology technology){
+        for (Technology existingTech : technologyList) {
+            if (existingTech.getId().equals(technology.getId())) {
+                return false;
+            }
+        }
+        technologyList.add(technology);
+        return true;
+    }
     public Technology deleteTechnologyByIndex(int index){
         if (isValidIndex(index)){
             return technologyList.remove(index - 1);
@@ -49,8 +49,8 @@ public class TechnologyDeviceAPI implements ISerializer{
             index ++;
             if (technology.getId().equals(id)){
                 if (technology instanceof Tablet){
-                technologyList.set(index,updatedDetails);
-                return true;
+                    technologyList.set(index,updatedDetails);
+                    return true;
                 }else return false;
             }
         }return false;
@@ -241,13 +241,13 @@ public class TechnologyDeviceAPI implements ISerializer{
 
     //the following is isValidId can be updated
     //to suit your code
-     public boolean isValidId(String id) {
+    public boolean isValidId(String id) {
         for (Technology techDev : technologyList) {
             if (techDev.getId().equals(id))
                 return false;
         }
-            return true;
-        }
+        return true;
+    }
     public boolean isValidIndex(int index){
         if (index > 0 && index <= technologyList.size() +1 ){
             return true;
@@ -270,7 +270,7 @@ public class TechnologyDeviceAPI implements ISerializer{
         }return null;
     }
 
-   //TODO - delete methods
+    //TODO - delete methods
 
     public Technology deleteTechnologyById(String id){
         int count = 0;
@@ -327,9 +327,9 @@ public class TechnologyDeviceAPI implements ISerializer{
         for (Technology technology : technologyList){
             if (technology instanceof SmartWatch){
                 if (topFiveSW.size()<5){
-                topFiveSW.add(technology);
+                    topFiveSW.add(technology);
+                }
             }
-         }
         }return topFiveSW;
     }
     public List<Technology> topFiveMostExpensiveTablet(){
@@ -352,25 +352,21 @@ public class TechnologyDeviceAPI implements ISerializer{
 
     @Override
     public void save() throws Exception {
-        XStream xStream = new XStream(new DomDriver());
-        ObjectOutputStream out = xStream.createObjectOutputStream(new FileWriter("technologyDevices"));
-        out.writeObject(technologyList);
-        out.close();
-        file = new File("technologyDevices.xml");
+        var xstream = new XStream(new DomDriver());
+        ObjectOutputStream os = xstream.createObjectOutputStream(new FileWriter(file));
+        os.writeObject(technologyList);
+        os.close();
     }
 
     @Override
     public void load() throws Exception {
-        Class<?>[] classes = new Class[]{models.SmartBand.class,models.SmartWatch.class,models.Tablet.class};
-
-        XStream xStream = new XStream(new DomDriver());
-        XStream.setupDefaultSecurity(xStream);
-        xStream.allowTypes(classes);
-
-        ObjectInputStream in = xStream.createObjectInputStream (new FileReader(fileName()));
+        Class<?>[] classes = new Class[]{ Technology.class };
+        XStream xstream = new XStream(new DomDriver());
+        XStream.setupDefaultSecurity(xstream);
+        xstream.allowTypes(classes);
+        ObjectInputStream in = xstream.createObjectInputStream(new FileReader(file));
         technologyList = (List<Technology>) in.readObject();
         in.close();
-
     }
     public String fileName(){
         return file.getName();
