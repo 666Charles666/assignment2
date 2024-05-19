@@ -281,10 +281,64 @@ public class TechnologyDeviceAPI implements ISerializer{
     }
 
     //TODO - sort methods
-
+    public void sortByPriceDescending(){
+        for (int i  = 0;i < technologyList.size()-1;i++ ){
+            for (int j = 0;j < technologyList.size()-1-i;j++){
+                if (technologyList.get(j).getPrice() <= technologyList.get(j+1).getPrice()){
+                    Technology a = technologyList.get(j);
+                    technologyList.set(j,technologyList.get(j+1));
+                    technologyList.set(j+1,a);
+                }
+            }
+        }
+    }
+    public void sortByPriceAscending(){
+        for (int i  = 0;i < technologyList.size()-1;i++ ){
+            for (int j = 0;j < technologyList.size()-1-i;j++){
+                if (technologyList.get(j).getPrice() >= technologyList.get(j+1).getPrice()){
+                    Technology a = technologyList.get(j);
+                    technologyList.set(j,technologyList.get(j+1));
+                    technologyList.set(j+1,a);
+                }
+            }
+        }
+    }
+    public void swapTechnology (List<Technology> technologyList, int i, int j){
+        Technology a = technologyList.get(i);
+        technologyList.set(i,technologyList.get(j));
+        technologyList.set(j,a);
+    }
 
     //TODO Top 5 methods
-
+    public List<Technology> topFiveMostExpensiveTechnology(){
+        List<Technology> topFive = new ArrayList<>();
+        sortByPriceDescending();
+        for (int i = 0;i <= 4;i++){
+            topFive.add(technologyList.get(i));
+        }return topFive;
+    }
+    public List<Technology> topFiveMostExpensiveSmartWatch(){
+        List<Technology> topFiveSW = new ArrayList<>();
+        sortByPriceDescending();
+        for (Technology technology : technologyList){
+            if (technology instanceof SmartWatch){
+                if (topFiveSW.size()<5){
+                topFiveSW.add(technology);
+            }
+         }
+        }return topFiveSW;
+    }
+    public List<Technology> topFiveMostExpensiveTablet(){
+        List<Technology> topFiveT = new ArrayList<>();
+        sortByPriceDescending();
+        for (Technology technology : technologyList){
+            if (technology instanceof Tablet){
+                if (topFiveT.size()<5){
+                    topFiveT.add(technology);
+                }
+            }
+        }return topFiveT;
+    }
 
 
 
