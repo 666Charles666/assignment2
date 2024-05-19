@@ -1,5 +1,7 @@
 package controllers;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import models.*;
 
 import utils.ISerializer;
@@ -142,14 +144,23 @@ public class TechnologyDeviceAPI implements ISerializer{
 
     @Override
     public void save() throws Exception {
-
+        var xstream = new XStream(new DomDriver());
+        ObjectOutputStream os = xstream.createObjectOutputStream(new FileWriter(file));
+        os.writeObject(technologyList);
+        os.close();
     }
 
     @Override
     public void load() throws Exception {
-
+        Class<?>[] classes = new Class[]{ Technology.class };
+        XStream xstream = new XStream(new DomDriver());
+        XStream.setupDefaultSecurity(xstream);
+        xstream.allowTypes(classes);
+        ObjectInputStream in = xstream.createObjectInputStream(new FileReader(file));
+        technologyList = (List<Technology>) in.readObject();
+        in.close();
     }
     public String fileName(){
-
+        return file.getName();
     }
 }
