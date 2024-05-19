@@ -12,6 +12,7 @@ import utils.Utilities;
 import java.io.*;
 import java.util.*;
 import controllers.ManufacturerAPI;
+import models.Tablet;
 
 
 
@@ -38,6 +39,42 @@ public class TechnologyDeviceAPI implements ISerializer{
             return technologyList.remove(index - 1);
         }else return null;
     }
+    public boolean updateTablet(String id, Tablet updatedDetails){
+        int index = -1;
+        for (Technology technology : technologyList){
+            index ++;
+            if (technology.getId().equals(id)){
+                if (technology instanceof Tablet){
+                technologyList.set(index,updatedDetails);
+                return true;
+                }else return false;
+            }
+        }return false;
+    }
+    public boolean updateSmartWatch(String id, SmartWatch updatedDetails){
+        int index = -1;
+        for (Technology technology : technologyList){
+            index ++;
+            if (technology.getId().equals(id)){
+                if (technology instanceof SmartWatch){
+                    technologyList.set(index,updatedDetails);
+                    return true;
+                }else return false;
+            }
+        }return false;
+    }
+    public boolean updateSmartBand(String id, SmartBand updatedDetails){
+        int index = -1;
+        for (Technology technology : technologyList){
+            index ++;
+            if (technology.getId().equals(id)){
+                if (technology instanceof SmartBand){
+                    technologyList.set(index,updatedDetails);
+                    return true;
+                }else return false;
+            }
+        }return false;
+    }
 
 
     //TODO - Number methods
@@ -50,6 +87,45 @@ public class TechnologyDeviceAPI implements ISerializer{
         }
         return count;
     }
+    public int numberOfTechnologyDevices(){
+        return technologyList.size();
+    }
+    public int numberOfTablets(){
+        int num = 0;
+        for (Technology technology : technologyList){
+            if (technology instanceof Tablet){
+                num++;
+            }
+        }
+        return num;
+    }
+    public int numberOfSmartBands(){
+        int num = 0;
+        for (Technology technology : technologyList){
+            if (technology instanceof SmartBand){
+                num++;
+            }
+        }
+        return num;
+    }
+    public int numberOfSmartWatch(){
+        int num = 0;
+        for (Technology technology : technologyList){
+            if (technology instanceof SmartWatch){
+                num++;
+            }
+        }
+        return num;
+    }
+    public int numberOfTechnologyByChosenManufacturer(Manufacturer manufacturer){
+        int num = 0;
+        for (Technology technology : technologyList){
+            if (technology.getManufacturer().equals(manufacturer)){
+                num++;
+            }
+        }
+        return num;
+    }
 
     // TODO Read/list methods
     public String listAllTechnologyDevices(){
@@ -58,33 +134,106 @@ public class TechnologyDeviceAPI implements ISerializer{
             for (Technology technology : technologyList){
                 tec += technologyList.indexOf(technology) + ": " + technology + "\n";
             }
-            return tec;
-        }return "No Technology Devices";
+        }
+        if (tec.isEmpty()){
+            return "No Technology Devices";
+        }
+        return tec;
     }
     public String listAllSmartBands(){
         String tec = "";
         for (Technology technology : technologyList){
             if (technology instanceof SmartBand){
                 tec += technologyList.indexOf(technology) + ": " + technology + "\n";
-            }return tec;
-        }return "“No Smart Bands";
+            }
+        }
+        if (tec.isEmpty()){
+            return "“No Smart Bands";
+        }
+        return tec;
     }
     public String listAllSmartWatches(){
         String tec = "";
         for (Technology technology : technologyList){
             if (technology instanceof SmartWatch){
                 tec += technologyList.indexOf(technology) + ": " + technology + "\n";
-            }return tec;
-        }return "No Smart Watches";
+            }
+        }
+        if (tec.isEmpty()){
+            return "No Smart Watches";
+        }
+
+        return tec;
     }
     public String listAllTablets(){
         String tec = "";
         for (Technology technology : technologyList){
             if (technology instanceof Tablet){
                 tec += technologyList.indexOf(technology) + ": " + technology + "\n";
-            }return tec;
-        }return "No Tablet";
+            }
+        }
+        if (tec.isEmpty()){
+            return "No Tablet";
+        }
+
+        return tec;
     }
+    public String listAllTechnologyAbovePrice(double price){
+        String tec = "";
+        for (Technology technology : technologyList){
+            if (technology.getPrice() >= price){
+                tec += technology + "\n";
+            }
+        }
+        if (tec.isEmpty()){
+            return "No technology more expensive than " + price;
+        }
+
+        return tec;
+    }
+    public String listAllTechnologyBelowPrice(double price){
+        String tec = "";
+        for (Technology technology : technologyList){
+            if (technology.getPrice() <= price){
+                tec += technology + "\n";
+            }
+        }
+        if (tec.isEmpty()) {
+            return "No technology cheaper than " + price;
+        }
+        return tec;
+
+    }
+    public String listAllTechDevicesByChosenManufacturer(Manufacturer manufacturer){
+        String tec = "";
+        for (Technology technology : technologyList){
+            if (technology.getManufacturer().equals(manufacturer)){
+                tec += technology + "\n";
+            }
+        }
+        if (tec.isEmpty()){
+            return "No technology manufactured by " + manufacturer;
+        }
+        return tec;
+    }
+    public String listAllTabletsByOperatingSystem(String OS) {
+        if (!OperatingSystemUtility.isValidOperatingSystem(OS)) {
+            return "Invalid Operating System";
+        }
+        String tec = "";
+        for (Technology technology : technologyList) {
+            if (technology instanceof Tablet) {
+                if (Tablet.getOperatingSystem().equalsIgnoreCase(OS)) {
+                    tec += technology + "\n";
+                }
+            }
+        }
+        if (tec.isEmpty()) {
+            return "No tablet with the operating system " + OS;
+        }
+        return tec;
+    }
+
 
     //the following is isValidId can be updated
     //to suit your code

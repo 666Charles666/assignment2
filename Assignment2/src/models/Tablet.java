@@ -3,7 +3,7 @@ package models;
 import utils.OperatingSystemUtility;
 
 public class Tablet extends Technology{
-    private String operatingSystem;
+    private static String operatingSystem;
     public Tablet(String modelName, double price, Manufacturer
             manufacturer, String id, String processor, int storage, String
                           operatingSystem){
@@ -17,7 +17,7 @@ public class Tablet extends Technology{
         else
             this.operatingSystem = "windows";
     }
-    public String getOperatingSystem(){
+    public static String getOperatingSystem(){
         return operatingSystem;
     }
     public double getInsurancePremium(){
