@@ -2,12 +2,13 @@ package models;
 
 import utils.OperatingSystemUtility;
 
-public class Tablet extends Technology{
+public class Tablet extends ComputingDevice{
     private static String operatingSystem;
     public Tablet(String modelName, double price, Manufacturer
             manufacturer, String id, String processor, int storage, String
                           operatingSystem){
-        super(modelName,price,manufacturer,id);
+        super(modelName,price,manufacturer,id,storage,processor);
+
         setOperatingSystem(operatingSystem);
     }
     public void setOperatingSystem(String operatingSystem){

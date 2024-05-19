@@ -7,11 +7,9 @@ import models.*;
 import utils.ISerializer;
 import utils.OperatingSystemUtility;
 
-import utils.Utilities;
-
 import java.io.*;
 import java.util.*;
-import controllers.ManufacturerAPI;
+
 import models.Tablet;
 
 
@@ -24,7 +22,7 @@ public class TechnologyDeviceAPI implements ISerializer{
 
 
     //TODO - create constructor
-    public TechnologyDeviceAPI(){
+    public TechnologyDeviceAPI(File file){
         this.technologyList = new ArrayList<>();
     }
 
@@ -32,7 +30,13 @@ public class TechnologyDeviceAPI implements ISerializer{
 
     //TODO - CRUD Methods
      public boolean addTechnologyDevice(Technology technology){
-        return technologyList.add(technology);
+         for (Technology existingTech : technologyList) {
+             if (existingTech.getId().equals(technology.getId())) {
+                 return false;
+             }
+         }
+         technologyList.add(technology);
+         return true;
      }
     public Technology deleteTechnologyByIndex(int index){
         if (isValidIndex(index)){
@@ -348,21 +352,25 @@ public class TechnologyDeviceAPI implements ISerializer{
 
     @Override
     public void save() throws Exception {
-        var xstream = new XStream(new DomDriver());
-        ObjectOutputStream os = xstream.createObjectOutputStream(new FileWriter(file));
-        os.writeObject(technologyList);
-        os.close();
+        XStream xStream = new XStream(new DomDriver());
+        ObjectOutputStream out = xStream.createObjectOutputStream(new FileWriter("technologyDevices"));
+        out.writeObject(technologyList);
+        out.close();
+        file = new File("technologyDevices.xml");
     }
 
     @Override
     public void load() throws Exception {
-        Class<?>[] classes = new Class[]{ Technology.class };
-        XStream xstream = new XStream(new DomDriver());
-        XStream.setupDefaultSecurity(xstream);
-        xstream.allowTypes(classes);
-        ObjectInputStream in = xstream.createObjectInputStream(new FileReader(file));
+        Class<?>[] classes = new Class[]{models.SmartBand.class,models.SmartWatch.class,models.Tablet.class};
+
+        XStream xStream = new XStream(new DomDriver());
+        XStream.setupDefaultSecurity(xStream);
+        xStream.allowTypes(classes);
+
+        ObjectInputStream in = xStream.createObjectInputStream (new FileReader(fileName()));
         technologyList = (List<Technology>) in.readObject();
         in.close();
+
     }
     public String fileName(){
         return file.getName();

@@ -17,8 +17,8 @@ public class SmartWatchTest {
     public void setup(){
         Manufacturer manufacturer = new Manufacturer("Apple", 333);
         //copied from the WearableDeviceTest
-        validSmartWatch = new SmartWatch("DoraWatch",1500,manufacturer,"123211","metal","8888","LED");
-        invalidSmartWatch = new SmartWatch("Dorrrrrrrrrrrawwwwwwwatcccch",6.6,manufacturer,"1269486589901","goodgodgreatwonderfullymetal","99909999999","LLL");
+        validSmartWatch = new SmartWatch("DoraWatch",1500,manufacturer,"123211","metal","8888",true,"LED");
+        invalidSmartWatch = new SmartWatch("Dorrrrrrrrrrrawwwwwwwatcccch",6.6,manufacturer,"1269486589901","goodgodgreatwonderfullymetal","99909999999",true,"LLL");
     }
 
     @Test
